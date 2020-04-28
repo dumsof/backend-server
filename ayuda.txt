@@ -1,0 +1,10 @@
+comando para que no se tenga que bajar el servidor de node cada vez que se hace un cambio
+con esto se intala un plugin para que la aplicación tome los cambios de forma automatica.
+se configura en el package.json en la seccion de script start
+npm install --save-dev nodemon
+
+para el manejo de mongo se instala Robo 3T
+https://robomongo.org/download
+
+poder utilizar mongo db desde la aplicación hay que instalar
+npm install mongoose --save
