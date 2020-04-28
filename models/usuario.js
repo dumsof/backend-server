@@ -1,6 +1,6 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 
-var Shema = mongoose.Shema;
+var Shema = mongoose.Schema;
 
 var usuairoShema = new Shema({
     nombre: { type: String, require: [true, 'El nombre es necesario'] },
