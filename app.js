@@ -5,6 +5,10 @@ var mongoose = require("mongoose");
 /* Inicializar variables */
 var app = express();
 
+//Importar rutas
+var appRoutas = require('./routes/app');
+var usuarioRoutas = require('./routes/usuario');
+
 mongoose.connection.openUri(
     "mongodb://localhost:27017/hospital-db",
     (error, respuesta) => {
@@ -15,13 +19,10 @@ mongoose.connection.openUri(
     }
 );
 
-/* Rutas */
-app.get("/", (request, respuesta, next) => {
-    respuesta.status(200).json({
-        ok: true,
-        mensaje: "Petición realizada correctamente.",
-    });
-});
+//Rutas
+app.use('/usuario', usuarioRoutas);
+app.use('/', appRoutas);
+
 
 /* DUM: servidor corre en el puerto 3000, comando node app */
 app.listen(3000, () => {
