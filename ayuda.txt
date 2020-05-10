@@ -8,3 +8,12 @@ https://robomongo.org/download
 
 poder utilizar mongo db desde la aplicación hay que instalar
 npm install mongoose --save
+
+para iniciar la aplicacion se debe ejecutar el sigiente comando
+npm start
+
+#se agrega la libreria body parse para obtener los datos del post
+npm install body-parser --save
+
+#se importa la libreria body parse en el archivo de app.js el principal
+var bodyParser = require('body-parser')
