@@ -1,4 +1,7 @@
-var mongoose = require("mongoose");
+var mongoose = require('mongoose');
+var uniqueValidator = require('mongoose-unique-validator');
+
+
 
 var Shema = mongoose.Schema;
 
@@ -10,5 +13,6 @@ var usuairoShema = new Shema({
     img: { type: String },
     role: { type: String, require: true, default: 'USER_ROLE' }
 });
+usuairoShema.plugin(uniqueValidator, { message: 'El {PATH} debe ser unico.' });
 
 module.exports = mongoose.model('Usuario', usuairoShema);
