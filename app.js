@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 //Importar rutas
 var appRoutas = require("./routes/app");
 var usuarioRoutas = require("./routes/usuario");
+var loginRoutas = require("./routes/login");
 
 mongoose.connection.openUri(
     "mongodb://localhost:27017/hospital-db",
@@ -28,6 +29,7 @@ mongoose.connection.openUri(
 
 //Rutas
 app.use("/usuario", usuarioRoutas);
+app.use("/login", loginRoutas);
 app.use("/", appRoutas);
 
 /* DUM: servidor corre en el puerto 3000, comando node app, los caracteres es para dar color a online */

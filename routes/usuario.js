@@ -52,7 +52,7 @@ app.post("/", (req, respuesta) => {
                 errors: error,
             });
         }
-        respuesta.status(201).json({
+        respuesta.status(200).json({
             ok: true,
             body: usuarioGuardado,
         });
@@ -118,11 +118,11 @@ app.delete('/:id', (req, respuesta) => {
         if (!usuarioBorrado) {
             return respuesta.status(400).json({
                 ok: false,
-                mensaje: `El usuario con el id ${id} no existe para ser borrado`,
+                mensaje: `El usuario con el id [${id}] no existe para ser borrado`,
                 errors: { message: "No existe un usuario con ese ID" },
             });
         }
-        res.status(201).json({
+        res.status(200).json({
             ok: true,
             body: usuarioBorrado,
         });
