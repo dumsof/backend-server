@@ -52,7 +52,7 @@ app.post("/", (req, respuesta) => {
                 errors: error,
             });
         }
-        res.status(201).json({
+        respuesta.status(201).json({
             ok: true,
             body: usuarioGuardado,
         });
@@ -60,7 +60,7 @@ app.post("/", (req, respuesta) => {
 });
 
 /* Actualizar usuario */
-app.put("/:id", (req, res) => {
+app.put("/:id", (req, respuesta) => {
     /* solo funciona con la libreria body parse */
     var id = req.params.id;
     console.log("El id que se envio", id);
