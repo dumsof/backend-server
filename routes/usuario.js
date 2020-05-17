@@ -1,5 +1,6 @@
 var express = require("express");
 var bcrypt = require("bcrypt");
+
 var app = new express();
 
 /* MedlleWare */
@@ -9,6 +10,7 @@ app.use(express.json());
 app.use(logger);
 
 var Usuario = require("../models/usuario");
+var mdAutentificacion = require("../middlewares/autentificacion");
 
 /* Obtener todos los usuarios */
 app.get("/", (request, respuesta, next) => {
@@ -31,8 +33,11 @@ app.get("/", (request, respuesta, next) => {
     );
 });
 
+
+
 /* Crear un nuevo usuario */
-app.post("/", (req, respuesta) => {
+/* DUM: para que el metodo trabaje con el token mdAutentificacion.verificarToken  */
+app.post("/", mdAutentificacion.verificarToken, (req, respuesta) => {
     /* solo funciona con la libreria body parse */
     var body = req.body;
     var usuario = new Usuario({
@@ -55,12 +60,13 @@ app.post("/", (req, respuesta) => {
         respuesta.status(200).json({
             ok: true,
             body: usuarioGuardado,
+            usuarioToke: req.usuario /* este usuario se catura en el middleware verificar token del decoded */
         });
     });
 });
 
 /* Actualizar usuario */
-app.put("/:id", (req, respuesta) => {
+app.put("/:id", mdAutentificacion.verificarToken, (req, respuesta) => {
     /* solo funciona con la libreria body parse */
     var id = req.params.id;
     console.log("El id que se envio", id);
@@ -105,7 +111,7 @@ app.put("/:id", (req, respuesta) => {
 
 /* Borrar un usuario por id */
 
-app.delete('/:id', (req, respuesta) => {
+app.delete('/:id', mdAutentificacion.verificarToken, (req, respuesta) => {
     var id = req.params.id;
     Usuario.findByIdAndRemove(id, (error, usuarioBorrado) => {
         if (error) {

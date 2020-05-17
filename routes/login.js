@@ -1,5 +1,6 @@
 var express = require("express");
 var bcrypt = require("bcrypt");
+var jsonWebToken = require("jsonwebtoken");
 var app = new express();
 
 /* MedlleWare */
@@ -7,7 +8,7 @@ var app = new express();
 app.use(express.json());
 /* Dum: funcion para ver la ruta solicitada */
 app.use(logger);
-
+var claveToken = require("../config/config");
 var Usuario = require("../models/usuario");
 
 /* Dum: Login */
@@ -34,11 +35,14 @@ app.post('/', (req, respuesta) => {
         }
 
         /* DUM: se debe crear un token */
+        usuarioBaseDato.password = "";
+        var token = jsonWebToken.sign({ usuario: usuarioBaseDato }, claveToken.SEED, { expiresIn: 14000 }); //token 4 horas
 
         respuesta.status(200).json({
             ok: true,
             body: usuarioBaseDato,
-            id: usuarioBaseDato.id
+            id: usuarioBaseDato.id,
+            token: token
         });
 
     });

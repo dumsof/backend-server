@@ -8,7 +8,6 @@ var app = express();
 
 //Body parser es un milleware para utilizar objeto de java scrip en cualquier lugar.
 // parse application/x-www-form-urlencoded
-// parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
