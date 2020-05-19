@@ -13,7 +13,7 @@ var mdAutentificacion = require("../middlewares/autentificacion");
 /* Obtener todos los hospitales */
 app.get("/", (request, respuesta, next) => {
     /* DUM para que solo devuelva las columnas que se especifican excec */
-    Hospital.find({}, "nombre img usuario").exec(
+    Hospital.find({}).exec(
         (error, hospitales) => {
             if (error) {
                 return respuesta.status(500).json({
@@ -35,7 +35,6 @@ app.post("/", mdAutentificacion.verificarToken, (req, respuesta) => {
     var body = req.body;
     var hospital = new Hospital({
         nombre: body.nombre,
-        img: body.img,
         usuario: req.usuario._id
     });
     hospital.save((error, hospitalGuardado) => {
@@ -48,8 +47,7 @@ app.post("/", mdAutentificacion.verificarToken, (req, respuesta) => {
         }
         respuesta.status(200).json({
             ok: true,
-            body: hospitalGuardado,
-            usuarioToke: req.usuario /* este usuario se catura en el middleware verificar token del decoded */
+            hospital: hospitalGuardado
         });
     });
 });
@@ -76,7 +74,6 @@ app.put("/:id", mdAutentificacion.verificarToken, (req, respuesta) => {
         console.log(body);
 
         hospital.nombre = body.nombre;
-        hospital.img = body.img;
         hospital.usuario = req.usuario._id;
 
         hospital.save((error, hospitalGuardado) => {
@@ -89,7 +86,7 @@ app.put("/:id", mdAutentificacion.verificarToken, (req, respuesta) => {
             }
             respuesta.status(201).json({
                 ok: true,
-                body: hospitalGuardado,
+                hospital: hospitalGuardado,
             });
         });
     });
@@ -115,7 +112,7 @@ app.delete('/:id', mdAutentificacion.verificarToken, (req, respuesta) => {
         }
         respuesta.status(200).json({
             ok: true,
-            hospitales: hospitalBorrado,
+            hospital: hospitalBorrado,
         });
     });
 });

@@ -35,7 +35,6 @@ app.post("/", mdAutentificacion.verificarToken, (req, respuesta) => {
     var body = req.body;
     var medico = new Medico({
         nombre: body.nombre,
-        img: body.img,
         hospital: body.hospital,
         usuario: req.usuario._id
     });
@@ -49,8 +48,7 @@ app.post("/", mdAutentificacion.verificarToken, (req, respuesta) => {
         }
         respuesta.status(200).json({
             ok: true,
-            body: medicoGuardado,
-            usuarioToke: req.usuario /* TEMP: este usuario se catura en el middleware verificar token del decoded */
+            medico: medicoGuardado
         });
     });
 });
@@ -77,7 +75,6 @@ app.put("/:id", mdAutentificacion.verificarToken, (req, respuesta) => {
         console.log(body);
 
         medico.nombre = body.nombre;
-        medico.img = body.img;
         medico.hospital = body.hospital;
         medico.usuario = req.usuario._id;
 
@@ -91,7 +88,7 @@ app.put("/:id", mdAutentificacion.verificarToken, (req, respuesta) => {
             }
             respuesta.status(201).json({
                 ok: true,
-                body: medicoGuardado,
+                medico: medicoGuardado,
             });
         });
     });
@@ -117,7 +114,7 @@ app.delete('/:id', mdAutentificacion.verificarToken, (req, respuesta) => {
         }
         respuesta.status(200).json({
             ok: true,
-            body: medicoBorrado,
+            medico: medicoBorrado,
         });
     });
 });
