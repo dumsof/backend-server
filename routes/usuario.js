@@ -34,7 +34,6 @@ app.get("/", (request, respuesta, next) => {
 });
 
 
-
 /* Crear un nuevo usuario */
 /* DUM: para que el metodo trabaje con el token mdAutentificacion.verificarToken  */
 app.post("/", mdAutentificacion.verificarToken, (req, respuesta) => {
@@ -57,7 +56,7 @@ app.post("/", mdAutentificacion.verificarToken, (req, respuesta) => {
                 errors: error,
             });
         }
-        respuesta.status(200).json({
+        respuesta.status(201).json({
             ok: true,
             body: usuarioGuardado,
             usuarioToke: req.usuario /* este usuario se catura en el middleware verificar token del decoded */

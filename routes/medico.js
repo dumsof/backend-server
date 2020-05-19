@@ -46,7 +46,7 @@ app.post("/", mdAutentificacion.verificarToken, (req, respuesta) => {
                 errors: error,
             });
         }
-        respuesta.status(200).json({
+        respuesta.status(201).json({
             ok: true,
             medico: medicoGuardado
         });
