@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 var appRoutas = require("./routes/app");
 var usuarioRoutas = require("./routes/usuario");
 var hospitalRoutas = require("./routes/hospital");
+var medicoRoutas = require("./routes/medico");
 var loginRoutas = require("./routes/login");
 
 mongoose.connection.openUri(
@@ -31,6 +32,7 @@ mongoose.connection.openUri(
 app.use("/usuario", usuarioRoutas);
 app.use("/login", loginRoutas);
 app.use("/hospital", hospitalRoutas);
+app.use("/medico", medicoRoutas);
 app.use("/", appRoutas);
 
 /* DUM: servidor corre en el puerto 3000, comando node app, los caracteres es para dar color a online */
