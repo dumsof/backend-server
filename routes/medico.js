@@ -12,22 +12,34 @@ var mdAutentificacion = require("../middlewares/autentificacion");
 
 /* Obtener todos los medicos */
 app.get("/", (request, respuesta, next) => {
+
+    var desde = request.query.desde || 0;
+    desde = Number(desde);
+
     /* DUM para que solo devuelva las columnas que se especifican excec */
-    Medico.find({}, "nombre img hospital usuario").exec(
-        (error, medico) => {
-            if (error) {
-                return respuesta.status(500).json({
-                    ok: false,
-                    mensaje: "Error cargando medico base de datos",
-                    errors: error,
+    Medico.find({})
+        .skip(desde)
+        .limit(5)
+        .populate('usuario', 'nombre email') /* con esto se obtiene informacion de la otra tabla y con el segundo parametro los campos */
+        .populate('hospital')
+        .exec(
+            (error, medico) => {
+                if (error) {
+                    return respuesta.status(500).json({
+                        ok: false,
+                        mensaje: "Error cargando medico base de datos",
+                        errors: error,
+                    });
+                }
+                Medico.count({}, (error, cantidadRegistro) => {
+                    respuesta.status(200).json({
+                        ok: true,
+                        medicos: medico,
+                        total: cantidadRegistro
+                    });
                 });
             }
-            respuesta.status(200).json({
-                ok: true,
-                medicos: medico,
-            });
-        }
-    );
+        );
 });
 
 /* Crear medico */

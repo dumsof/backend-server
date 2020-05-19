@@ -12,22 +12,32 @@ var mdAutentificacion = require("../middlewares/autentificacion");
 
 /* Obtener todos los hospitales */
 app.get("/", (request, respuesta, next) => {
+    var desde = request.query.desde || 0;
+    desde = Number(desde);
+
     /* DUM para que solo devuelva las columnas que se especifican excec */
-    Hospital.find({}).exec(
-        (error, hospitales) => {
-            if (error) {
-                return respuesta.status(500).json({
-                    ok: false,
-                    mensaje: "Error cargando hospital base de datos",
-                    errors: error,
+    Hospital.find({})
+        .populate('usuario', 'nombre email') /* relacion con la tabla usuario y obtener sus campos */
+        .skip(desde)
+        .limit(5)
+        .exec(
+            (error, hospitales) => {
+                if (error) {
+                    return respuesta.status(500).json({
+                        ok: false,
+                        mensaje: "Error cargando hospital base de datos",
+                        errors: error,
+                    });
+                }
+                Hospital.count({}, (error, cantidadRegistro) => {
+                    respuesta.status(200).json({
+                        ok: true,
+                        hospitales: hospitales,
+                        total: cantidadRegistro
+                    });
                 });
             }
-            respuesta.status(200).json({
-                ok: true,
-                hospitales: hospitales,
-            });
-        }
-    );
+        );
 });
 
 /* Crear Hospital */
