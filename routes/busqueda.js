@@ -6,6 +6,39 @@ var Hospital = require("../models/hospital");
 var Medico = require("../models/medico");
 var Usuario = require("../models/usuario");
 
+/* Busqueda por colección */
+app.get("/coleccion/:tabla/:busqueda", (request, respuesta, next) => {
+    var busqueda = request.params.busqueda;
+    var tabla = request.params.tabla;
+    var busquedaRegex = new RegExp(busqueda, 'i');
+
+    var promesa;
+    switch (tabla) {
+        case 'hospitales':
+            promesa = buscarHospitales(busqueda, busquedaRegex);
+            break;
+        case 'medicos':
+            promesa = buscarMedicos(busqueda, busquedaRegex);
+            break;
+        case 'usuarios':
+            promesa = buscarUsuarios(busqueda, busquedaRegex);
+            break;
+        default:
+            return respuesta.status(400).json({
+                Ok: false,
+                message: 'Los tipos de busqueda solo son usuarios, medicos, hospitales',
+                errors: { menssage: 'Tipo de tabla/coleccion no válida' }
+            });
+    }
+
+    promesa.then(dato => {
+        respuesta.status(400).json({
+            Ok: false,
+            [tabla]: dato
+        });
+    });
+});
+
 app.get("/todo/:busqueda", (request, respuesta, next) => {
     var busqueda = request.params.busqueda;
     /* expresion regular para que tenga en cuenta minusculas o mayuscula el dato a buscar */
