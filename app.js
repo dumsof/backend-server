@@ -19,7 +19,7 @@ var medicoRoutas = require("./routes/medico");
 var busquedaRoutas = require("./routes/busqueda");
 var uploadRoutas = require("./routes/upload");
 var loginRoutas = require("./routes/login");
-
+var imagenesRoutas = require("./routes/imagenes");
 mongoose.connection.openUri(
     "mongodb://localhost:27017/hospital-db",
     (error, respuesta) => {
@@ -29,6 +29,13 @@ mongoose.connection.openUri(
         console.log("Base de datos: \x1b[32m%s\x1b[0m", " online");
     }
 );
+//Server index config
+//esta libreria se instala con el comando npm install --save serve-index
+//esto permite mostar en el explorador las carpetas e imagenes
+//http://localhos:3000/uploads/
+/* var serveIndex = require('serve-index');
+app.use(express.static(__dirname + '/'));
+app.use('/uploads', serveIndex(__dirname + '/uploads')); */
 
 //Rutas
 app.use("/usuario", usuarioRoutas);
@@ -37,6 +44,7 @@ app.use("/hospital", hospitalRoutas);
 app.use("/medico", medicoRoutas);
 app.use("/busqueda", busquedaRoutas);
 app.use("/upload", uploadRoutas);
+app.use("/img", imagenesRoutas);
 app.use("/", appRoutas);
 
 /* DUM: servidor corre en el puerto 3000, comando node app, los caracteres es para dar color a online */
