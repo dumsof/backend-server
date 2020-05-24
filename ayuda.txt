@@ -17,3 +17,7 @@ npm install body-parser --save
 
 #se importa la libreria body parse en el archivo de app.js el principal
 var bodyParser = require('body-parser')
+
+google Cliente OAuth
+-261803787485-9d77fs26rb1j6s2nd800t92bqm2t73mj.apps.googleusercontent.com
+-wOm8SMTHfcUDIzakQttOzBiD
