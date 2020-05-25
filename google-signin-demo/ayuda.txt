@@ -1,0 +1,16 @@
+# para crear el paquete json se debe correr el siguiente comando
+npm init
+# luego se debe instalar el servidor para poder mostrar una pagina index.html que la creamos
+npm install lite-server --save-devnpm install lite-server --save-dev
+
+#para que el servidor corra se debe ejecutar
+npm run dev
+
+#pagina del servidor
+https://github.com/johnpapa/lite-server
+
+se debe agregar en el archivo de package.json la linea 
+# Inside package.json...
+  "scripts": {
+    "dev": "lite-server"
+  },

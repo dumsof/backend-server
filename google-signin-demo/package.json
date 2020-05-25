@@ -1,0 +1,19 @@
+{
+    "name": "google-signin-demo",
+    "version": "1.0.0",
+    "description": "prueba logueo con google",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "lite-server -c ls-config.json"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "install": "^0.13.0",
+        "lite-server": "^2.5.4"
+    },
+    "dependencies": {
+        "google-auth-library": "^6.0.0"
+    }
+}

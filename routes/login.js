@@ -45,11 +45,63 @@ app.post('/google', async(req, respuesta) => {
             mensaje: "Token no válido"
         });
     });
-    respuesta.status(200).json({
-        ok: true,
-        mensaje: 'Respuesta rapida funciona',
-        googleUser: googleUser
+
+    Usuario.findOne({ email: googleUser.email }, (error, usuarioBaseDato) => {
+        if (error) {
+            return respuesta.status(500).json({
+                ok: false,
+                mensaje: "Error al buscar el usuario",
+                errors: error,
+            });
+        }
+        if (usuarioBaseDato) {
+            if (usuarioBaseDato.google === false) {
+                return respuesta.status(400).json({
+                    ok: false,
+                    mensaje: "Debe de usar su autentificación normal."
+                });
+            }
+
+            var token = jsonWebToken.sign({ usuario: usuarioBaseDato }, claveToken.SEED, { expiresIn: 14000 }); //token 4 horas
+
+            respuesta.status(200).json({
+                ok: true,
+                body: usuarioBaseDato,
+                id: usuarioBaseDato.id,
+                token: token
+            });
+        }
+        //el usuario no existe hay que crearlo.
+        const usuario = new Usuario();
+        usuario.nombre = googleUser.nombre;
+        usuario.email = googleUser.email;
+        usuario.img = googleUser.img;
+        usuario.google = true;
+        usuario.password = ":)";
+        usuario.save((error, usuarioBaseDato) => {
+            if (error) {
+                return respuesta.status(500).json({
+                    ok: false,
+                    mensaje: "Error al tratar de registrar el usuario de google.",
+                    errors: error,
+                });
+            }
+            var token = jsonWebToken.sign({ usuario: usuarioBaseDato }, claveToken.SEED, { expiresIn: 14000 }); //token 4 horas
+            respuesta.status(200).json({
+                ok: true,
+                body: usuarioBaseDato,
+                id: usuarioBaseDato.id,
+                token: token
+            });
+        });
+
     });
+
+    /*  respuesta.status(200).json({
+         ok: true,
+         mensaje: 'Respuesta rapida funciona',
+         googleUser: googleUser
+     }); */
 });
 //-------------------------------------------------------------
 
