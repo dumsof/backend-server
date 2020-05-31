@@ -12,7 +12,7 @@ var claveToken = require("../config/config");
 var Usuario = require("../models/usuario");
 /* google */
 const CLIENT_ID = require("../config/config").CLIENT_ID;
-const { OAuth2Client } = require('google-auth-library');
+const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(CLIENT_ID);
 
 /* Autentificación de google */
@@ -37,12 +37,12 @@ async function verify(token) {
     };
 }
 
-app.post('/google', async(req, respuesta) => {
+app.post("/google", async(req, respuesta) => {
     var token = req.body.token;
-    var googleUser = await verify(token).catch(e => {
+    var googleUser = await verify(token).catch((e) => {
         return respuesta.status(500).json({
             ok: false,
-            mensaje: "Token no válido"
+            mensaje: "Token no válido",
         });
     });
 
@@ -58,17 +58,19 @@ app.post('/google', async(req, respuesta) => {
             if (usuarioBaseDato.google === false) {
                 return respuesta.status(400).json({
                     ok: false,
-                    mensaje: "Debe de usar su autentificación normal."
+                    mensaje: "Debe de usar su autentificación normal.",
                 });
             }
 
-            var token = jsonWebToken.sign({ usuario: usuarioBaseDato }, claveToken.SEED, { expiresIn: 14000 }); //token 4 horas
+            var token = jsonWebToken.sign({ usuario: usuarioBaseDato },
+                claveToken.SEED, { expiresIn: 14000 }
+            ); //token 4 horas
 
-            respuesta.status(200).json({
+            return respuesta.status(200).json({
                 ok: true,
-                body: usuarioBaseDato,
+                usuario: usuarioBaseDato,
                 id: usuarioBaseDato.id,
-                token: token
+                token: token,
             });
         }
         //el usuario no existe hay que crearlo.
@@ -78,7 +80,7 @@ app.post('/google', async(req, respuesta) => {
         usuario.img = googleUser.img;
         usuario.google = true;
         usuario.password = ":)";
-        usuario.save((error, usuarioBaseDato) => {
+        usuario.save((error, usuarioGuardado) => {
             if (error) {
                 return respuesta.status(500).json({
                     ok: false,
@@ -86,31 +88,30 @@ app.post('/google', async(req, respuesta) => {
                     errors: error,
                 });
             }
-            var token = jsonWebToken.sign({ usuario: usuarioBaseDato }, claveToken.SEED, { expiresIn: 14000 }); //token 4 horas
+            var token = jsonWebToken.sign({ usuario: usuarioGuardado },
+                claveToken.SEED, { expiresIn: 14000 }
+            ); //token 4 horas
             respuesta.status(200).json({
                 ok: true,
-                body: usuarioBaseDato,
-                id: usuarioBaseDato.id,
-                token: token
+                usuario: usuarioGuardado,
+                id: usuarioGuardado.id,
+                token: token,
             });
         });
-
     });
 
     /*  respuesta.status(200).json({
-         ok: true,
-         mensaje: 'Respuesta rapida funciona',
-         googleUser: googleUser
-     }); */
+           ok: true,
+           mensaje: 'Respuesta rapida funciona',
+           googleUser: googleUser
+       }); */
 });
 //-------------------------------------------------------------
 
-
 /* Dum: Login */
-app.post('/', (req, respuesta) => {
+app.post("/", (req, respuesta) => {
     var body = req.body;
     Usuario.findOne({ email: body.email }, (error, usuarioBaseDato) => {
-
         if (error) {
             return respuesta.status(500).json({
                 ok: false,
@@ -119,7 +120,9 @@ app.post('/', (req, respuesta) => {
             });
         }
 
-        if (!usuarioBaseDato || !bcrypt.compareSync(body.password, usuarioBaseDato.password)) {
+        if (!usuarioBaseDato ||
+            !bcrypt.compareSync(body.password, usuarioBaseDato.password)
+        ) {
             return respuesta.status(400).json({
                 ok: false,
                 mensaje: "El usuario o el password son incorrectos, por favor verifique.",
@@ -129,20 +132,18 @@ app.post('/', (req, respuesta) => {
 
         /* DUM: se debe crear un token */
         usuarioBaseDato.password = "";
-        var token = jsonWebToken.sign({ usuario: usuarioBaseDato }, claveToken.SEED, { expiresIn: 14000 }); //token 4 horas
+        var token = jsonWebToken.sign({ usuario: usuarioBaseDato },
+            claveToken.SEED, { expiresIn: 14000 }
+        ); //token 4 horas
 
         respuesta.status(200).json({
             ok: true,
-            body: usuarioBaseDato,
+            usuario: usuarioBaseDato,
             id: usuarioBaseDato.id,
-            token: token
+            token: token,
         });
-
     });
-
-
 });
-
 
 /* Dum: Poder ver ruta solicitada, registrar peticiones que llegan al servidor
 MidleWare siempre se ejecuta antes de cualquier petición */
