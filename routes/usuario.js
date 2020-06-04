@@ -110,7 +110,7 @@ app.put("/:id", mdAutentificacion.verificarToken, (req, respuesta) => {
             }
             respuesta.status(201).json({
                 ok: true,
-                body: usuarioGuardado,
+                usuario: usuarioGuardado,
             });
         });
     });
