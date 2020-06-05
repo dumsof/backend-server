@@ -81,8 +81,7 @@ function subirPorTipo(tipo, id, nombreArchivo, respuesta) {
                 fileSystem.unlinkSync(pathViejo);
             }
             usuario.img = nombreArchivo;
-            usuario.save(error, usuarioActualizado => {
-
+            usuario.save((error, usuarioActual) => {
                 if (error) {
                     return respuesta.status(500).json({
                         ok: false,
@@ -92,8 +91,8 @@ function subirPorTipo(tipo, id, nombreArchivo, respuesta) {
                 }
                 return respuesta.status(200).json({
                     ok: true,
-                    mensaje: "Imagen de usuario actualizado con éxito",
-                    usuario: usuarioActualizado
+                    mensaje: "Imagen de usuario actualizada con éxito",
+                    usuario: usuarioActual
                 });
             });
         });
@@ -113,7 +112,7 @@ function subirPorTipo(tipo, id, nombreArchivo, respuesta) {
                 fileSystem.unlinkSync(pathViejo);
             }
             medico.img = nombreArchivo;
-            medico.save(error, medicoActualizado => {
+            medico.save((error, medicoActualizado) => {
 
                 if (error) {
                     return respuesta.status(500).json({
@@ -145,7 +144,7 @@ function subirPorTipo(tipo, id, nombreArchivo, respuesta) {
                 fileSystem.unlinkSync(pathViejo);
             }
             hospital.img = nombreArchivo;
-            hospital.save(error, hospitalActualizado => {
+            hospital.save((error, hospitalActualizado) => {
                 if (error) {
                     return respuesta.status(500).json({
                         ok: false,

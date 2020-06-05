@@ -66,7 +66,7 @@ app.post("/" /* , mdAutentificacion.verificarToken */ , (req, respuesta) => {
         }
         respuesta.status(201).json({
             ok: true,
-            body: usuarioGuardado,
+            usuario: usuarioGuardado,
             usuarioToke: req.usuario /* este usuario se catura en el middleware verificar token del decoded */
         });
     });
@@ -137,7 +137,7 @@ app.delete('/:id', mdAutentificacion.verificarToken, (req, respuesta) => {
         }
         respuesta.status(200).json({
             ok: true,
-            body: usuarioBorrado,
+            usuario: usuarioBorrado,
         });
     });
 });
