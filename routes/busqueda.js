@@ -32,8 +32,8 @@ app.get("/coleccion/:tabla/:busqueda", (request, respuesta, next) => {
     }
 
     promesa.then(dato => {
-        respuesta.status(400).json({
-            Ok: false,
+        respuesta.status(200).json({
+            Ok: true,
             [tabla]: dato
         });
     });
@@ -95,7 +95,7 @@ function buscarMedicos(busqueda, regex) {
 /* buscar por el nombre y el mail */
 function buscarUsuarios(busqueda, regex) {
     return new Promise((resolve, reject) => {
-        Usuario.find({}, 'nombre email role img')
+        Usuario.find({}, 'nombre email role img google')
             .or([{ 'nombre': regex }, { 'email': regex }])
             .exec((error, usuarios) => {
                 if (error) {
