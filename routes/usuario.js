@@ -17,7 +17,7 @@ app.get("/", (request, respuesta, next) => {
     var desde = request.query.desde || 0;
     desde = Number(desde);
     /* DUM para que solo devuelva las columnas que se especifican excec */
-    Usuario.find({}, "nombre apellidos email img role")
+    Usuario.find({}, "nombre apellidos email img role google")
         .skip(desde)
         .limit(5)
         .exec(
